@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block  title %}Upload{% endblock  %}
+{% block  content %}
+<h1>Upload Page</h1>
+
+<form method="POST" actions="{{ url_for("upload") }}">
+<input type="file" name="file" accept=".pdf, image/*"><br>
+<input type="submit" value="Upload File"><br>
+
+</form>
+
+{% endblock  %}
