@@ -1,5 +1,4 @@
-import pandas as pd
-from flask import Flask, request, render_template, make_response
+from flask import Flask, request, render_template, make_response, jsonify
 
 app = Flask(__name__, template_folder='templates')
 
@@ -31,6 +30,26 @@ def upload():
         return render_template('upload.html')
     if request.method == 'POST':
         return ""
+    
+@app.route('/request')
+def request():
+        return render_template('request.html')
+
+    
+@app.route('/handle_post', methods=['POST'])
+def handle_post():
+    try:
+        data = request.get_json()
+        name = data['name']
+        greetings = data['greetings']
+
+        with open('file.txt', 'w') as file:
+            file.write(f'Name: {name}, Greetings: {greetings}')
+
+        return jsonify({'message': 'Successfully written!'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.template_filter('reverse_string')
 def reverse_string(s):
@@ -41,4 +60,4 @@ def select_letters(s):
     return s[1::2]
 
 if __name__ ==  '__main__':
-    app.run(host='127.0.0.1', port=5555, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
